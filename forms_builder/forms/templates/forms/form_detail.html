@@ -1,17 +1,121 @@
 <!doctype html>
-{% load forms_builder_tags %}
+{% load forms_builder_tags staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>{{ form.title }}</title>
-    <style>
-        body {font-family:sans-serif; padding:1em 2em;}
-        p {width:50em; clear:both;}
-        label {display:block; float:left; width:8em; margin:0 1.2em 1.2em 0;}
-        li {list-style-type:none;}
-        li label {width:auto; cursor:pointer;}
-        .errorlist {color:#f00;}
-    </style>
+<meta charset="utf-8">
+<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+   Remove this if you use the .htaccess -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="initial-scale=1.0, target-densitydpi=device-dpi" /><!-- this is for mobile (Android) Chrome -->
+<meta name="viewport" content="initial-scale=1.0, width=device-height"><!--  mobile Safari, FireFox, Opera Mobile  -->
+<script src="{% static "js/modernizr.js" %}"></script>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="{% static "js/jSignature/flashcanvas.js"></script>
+<![endif]-->
+<style type="text/css">
+
+	div {
+		margin-top:1em;
+		margin-bottom:1em;
+	}
+	input {
+		padding: .5em;
+		margin: .5em;
+	}
+	select {
+		padding: .5em;
+		margin: .5em;
+	}
+
+	#signatureparent {
+		color:darkblue;
+		background-color:darkgrey;
+		/*max-width:600px;*/
+		padding:20px;
+	}
+
+	/*This is the div within which the signature canvas is fitted*/
+	#signature {
+		border: 2px dotted black;
+		background-color:lightgrey;
+	}
+
+	/* Drawing the 'gripper' for touch-enabled devices */
+	html.touch #content {
+		float:left;
+		width:92%;
+	}
+	html.touch #scrollgrabber {
+		float:right;
+		width:4%;
+		margin-right:2%;
+		background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAFCAAAAACh79lDAAAAAXNSR0IArs4c6QAAABJJREFUCB1jmMmQxjCT4T/DfwAPLgOXlrt3IwAAAABJRU5ErkJggg==)
+	}
+	html.borderradius #scrollgrabber {
+		border-radius: 1em;
+	}
+
+</style>
 </head>
 <body>
-    {% render_built_form form %}
+<div>
+  {% render_built_form form %}
+<div id="content">
+	<div id="signatureparent">
+		<div>sing in the space below and click "Finished Signing" when you have finished.
+		<button id="finished">Finished signing</button> <button id="reset-signature">Clear signature</button>
+		</div>
+
+		<div id="signature"></div>
+	</div>
+  <p>Signed:</p>
+	<div id="displayarea"></div>
+	<div>
+
+	</div>
+
+</div>
+<div id="scrollgrabber"></div>
+</div>
+<script src="{% static "js/jquery-2.2.0.min.js" %}"></script>
+<script src="{% static "js/jSignature/jSignature.min.js" %}"></script>
+{% comment %}<script src="{% static "js/jSignature/plugins/jSignature.CompressorBase30.js" %}"></script>{% endcomment %}
+<script src="{% static "js/jSignature/plugins/jSignature.CompressorSVG.js" %}"></script>
+<script src="{% static "js/jSignature/plugins/jSignature.UndoButton.js" %}"></script>
+<script src="{% static "js/jSignature/plugins/signhere/jSignature.SignHere.js" %}"></script>
+<script>
+$(document).ready(function() {
+
+	// This is the part where jSignature is initialized.
+	var $sigdiv = $("#signature").jSignature({'UndoButton':true})
+
+	// All the code below is just code driving the demo.
+	, $tools = $('#tools')
+	, $extraarea = $('#displayarea');
+
+	$('#finished').bind('click', function(e){
+      alert('finished');
+			var datapair = $sigdiv.jSignature("getData", "svgbase64");
+      $('#id_artist_signature').val(datapair);
+      var i = new Image();
+      i.src = "data:" + datapair[0] + "," + datapair[1];
+      $(i).appendTo($("#displayarea"));
+      $sigdiv.hide();
+      $("#signatureparent").hide();
+	});
+
+	$('#reset-signature').bind('click', function(e){
+		$sigdiv.jSignature('reset');
+    $('#id_artist_signature').val('');
+	});
+
+
+	if (Modernizr.touch){
+		$('#scrollgrabber').height($('#content').height())
+	}
+
+})
+</script>
 </body>
+</html>

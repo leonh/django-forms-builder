@@ -10,10 +10,10 @@ if not (getattr(settings, "SITE_ID") and
 
 
 # The maximum allowed length for field values.
-FIELD_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_FIELD_MAX_LENGTH", 2000)
+FIELD_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_FIELD_MAX_LENGTH", 20000)
 
 # The maximum allowed length for field labels.
-LABEL_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_LABEL_MAX_LENGTH", 200)
+LABEL_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_LABEL_MAX_LENGTH", 500)
 
 # Sequence of custom fields that will be added to the form field types.
 EXTRA_FIELDS = getattr(settings, "FORMS_BUILDER_EXTRA_FIELDS", ())
@@ -31,19 +31,19 @@ USE_HTML5 = getattr(settings, "FORMS_BUILDER_USE_HTML5", True)
 USE_SITES = getattr(settings, "FORMS_BUILDER_USE_SITES", False)
 
 # Boolean controlling whether form slugs are editable in the admin.
-EDITABLE_SLUGS = getattr(settings, "FORMS_BUILDER_EDITABLE_SLUGS", False)
+EDITABLE_SLUGS = getattr(settings, "FORMS_BUILDER_EDITABLE_SLUGS", True)
 
 # Char to start a quoted choice with.
-CHOICES_QUOTE = getattr(settings, "FORMS_BUILDER_CHOICES_QUOTE", "`")
+CHOICES_QUOTE = getattr(settings, "FORMS_BUILDER_CHOICES_QUOTE", "'")
 
 # Char to end a quoted choice with.
-CHOICES_UNQUOTE = getattr(settings, "FORMS_BUILDER_CHOICES_UNQUOTE", "`")
+CHOICES_UNQUOTE = getattr(settings, "FORMS_BUILDER_CHOICES_UNQUOTE", "'")
 
 # Char to use as a field delimiter when exporting form responses as CSV.
 CSV_DELIMITER = getattr(settings, "FORMS_BUILDER_CSV_DELIMITER", ",")
 
 # The maximum allowed length for field help text
-HELPTEXT_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_HELPTEXT_MAX_LENGTH", 100)
+HELPTEXT_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_HELPTEXT_MAX_LENGTH", 500)
 
 # The maximum allowed length for field choices
 CHOICES_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_CHOICES_MAX_LENGTH", 1000)
